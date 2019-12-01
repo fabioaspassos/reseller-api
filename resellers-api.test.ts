@@ -19,8 +19,8 @@ beforeAll(() => {
         ressellersRouter,
         ordersRouter
     ])
-        .then(() => Resseller.remove({}).exec())
-        .then(() => Order.remove({}).exec())
+        .then(() => Resseller.deleteMany({}).exec())
+        .then(() => Order.deleteMany({}).exec())
         .catch(console.error)
 })
 

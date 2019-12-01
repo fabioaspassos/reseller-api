@@ -10,10 +10,10 @@ export class Server {
 
     application: restify.Server
 
-    initializeDb(): mongoose.MongooseThenable {
+    initializeDb(): Promise<any> {
         (<any>mongoose.Promise) = global.Promise
         return mongoose.connect(environment.db.url, {
-            useMongoClient: true
+            useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false, useCreateIndex: true
         })
 
     }

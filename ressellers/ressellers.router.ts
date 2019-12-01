@@ -18,9 +18,9 @@ class RessellersRouter extends ModelRouter<Resseller> {
         application.post('/ressellers', this.save)
         application.get('/ressellers/:id', [this.validateId, this.findById])
         application.patch('/ressellers/:id', [this.validateId, this.update])
-        application.post('ressellers/authenticate', authenticate)
+        application.post('/ressellers/authenticate', authenticate)
 
-        application.get('ressellers/:cpf/cashback', (req, resp, next) =>{
+        application.get('/ressellers/:cpf/cashback', (req, resp, next) =>{
             /**
              * Opcionalmente posso localizar o revendedor e informar o cpf dele pra consulta
              */
@@ -36,7 +36,6 @@ class RessellersRouter extends ModelRouter<Resseller> {
                     const result = JSON.parse(body);
                     //retorna apenas o saldo.
                     resp.send(result.body)
-                  console.log(body)
               } else {
                   resp.send({ 'error' : error })
                 }
