@@ -1,6 +1,14 @@
 # Resseler - API
 Este é um projeto exemplo de Cashback para Revendedoras.
 
+### Frameworks utilizados
+- Mongoose
+- Restify
+- jsonwebtoken
+- bcrypt
+- jest
+- supertest
+
 ### Pré-requisitos
  - Serviço de MongoDB instalado local.
 
