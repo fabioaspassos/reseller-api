@@ -58,7 +58,7 @@ const saveMiddleware = function (next) {
                 order.cashback = 0.1    
             }else if (order.valor >= 1001 && order.valor <= 1500){
                 order.cashback = 0.15    
-            }else if (order.valor >= 2000){
+            }else if (order.valor > 1500){
                 order.cashback = 0.2
             }
         } else {

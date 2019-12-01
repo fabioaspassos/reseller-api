@@ -51,6 +51,20 @@ test('post /ressellers', () => {
         }).catch(fail)
 })
 
+test('post /ressellers/authenticate', () => {
+    return request(address)
+        .post('/ressellers/authenticate')
+        .send({
+            email: "revendedor01@email.com",
+            password: "123",
+        })
+        .then(response => {
+            expect(response.status).toBe(200)
+            expect(response.body.email).toBe('revendedor01@email.com')
+            expect(response.body.accessToken).toBeDefined()
+        }).catch(fail)
+})
+
 test('post /ressellers - CPF Required', () => {
     return request(address)
         .post('/ressellers')
@@ -129,11 +143,43 @@ test('get /ressellers/:cpf/cashback', () => {
 /**
  * Inicio dos testes dos Pedidos
  */
-test('post /orders - Status Aprovado - cashback 10%', () => {
+
+let _idOrderInValidation : string = ''
+let _idOrderApproved : string = ''
+
+test('post /orders - Status Em Validação', () => {
     return request(address)
         .post('/orders')
         .send({
             codigo: 1,
+            valor: 1000,
+            data: "2019-11-30T10:36",
+            qtde_itens: 1,
+            cpf: "53477760565"
+        })
+        .then(response => {
+            _idOrderInValidation = response.body._id
+            expect(response.status).toBe(200)
+            expect(response.body._id).toBeDefined()
+            expect(response.body.cashback).toBe(0)
+            expect(response.body.status).toBe('Em Validação')
+        }).catch(fail)
+})
+
+test('del /orders/:id - Status Em Validação', () => {
+    return request(address)
+        .del(`/orders/${_idOrderInValidation}`)
+        .send()
+        .then(response => {
+            expect(response.status).toBe(204)
+        }).catch(fail)
+})
+
+test('post /orders - Status Aprovado - cashback 10%', () => {
+    return request(address)
+        .post('/orders')
+        .send({
+            codigo: 2,
             valor: 200,
             data: "2019-11-30T10:36",
             qtde_itens: 1,
@@ -142,8 +188,53 @@ test('post /orders - Status Aprovado - cashback 10%', () => {
         .then(response => {
             expect(response.status).toBe(200)
             expect(response.body._id).toBeDefined()
-            expect(response.body.codigo).toBe(1)
             expect(response.body.cashback).toBe(0.1)
             expect(response.body.status).toBe('Aprovado')
+        }).catch(fail)
+})
+
+test('post /orders - Status Aprovado - cashback 15%', () => {
+    return request(address)
+        .post('/orders')
+        .send({
+            codigo: 3,
+            valor: 1200,
+            data: "2019-11-30T10:36",
+            qtde_itens: 1,
+            cpf: "15350946056"
+        })
+        .then(response => {
+            expect(response.status).toBe(200)
+            expect(response.body._id).toBeDefined()
+            expect(response.body.cashback).toBe(0.15)
+            expect(response.body.status).toBe('Aprovado')
+        }).catch(fail)
+})
+
+test('post /orders - Status Aprovado - cashback 20%', () => {
+    return request(address)
+        .post('/orders')
+        .send({
+            codigo: 4,
+            valor: 1600,
+            data: "2019-11-30T10:36",
+            qtde_itens: 1,
+            cpf: "15350946056"
+        })
+        .then(response => {
+            _idOrderApproved = response.body._id
+            expect(response.status).toBe(200)
+            expect(response.body._id).toBeDefined()
+            expect(response.body.cashback).toBe(0.2)
+            expect(response.body.status).toBe('Aprovado')
+        }).catch(fail)
+})
+
+test('del /orders/:id - Status Aprovado', () => {
+    return request(address)
+        .del(`/orders/${_idOrderApproved}`)
+        .send()
+        .then(response => {
+            expect(response.status).toBe(428)
         }).catch(fail)
 })
