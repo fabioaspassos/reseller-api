@@ -24,6 +24,7 @@ As configurações de porta de execução e url de banco são configuradas em /c
 #### Revendedora
 
 ##### Estrutura do objeto Resseller
+```
 {
     nome: string,
     cpf: string,
@@ -31,6 +32,7 @@ As configurações de porta de execução e url de banco são configuradas em /c
     password: string,
     genero: enum['Masculino', 'Femino']
 }
+```
 
 ##### GET /ressellers
 Retorna todos os revendedores armazenados na base de dados.
@@ -48,16 +50,18 @@ Adciona um novorevendedor. Dados obrigatorios nome, cpf, email e password
 ##### POST /ressellers/authenticate
 Autentica um revendedor.
 Estrutura do body:
+```
 {
 	email: string,
 	password: string
 }
-
+```
 Caso a autenticação retornar com sucesso, o servico irá fornecer um JSON com o atributo 'accessToken'
 
 #### Compras
 
 ##### Estrutura do objeto Compras
+```
 {
     codigo: number,
     valor: number,
@@ -66,6 +70,7 @@ Caso a autenticação retornar com sucesso, o servico irá fornecer um JSON com 
     cpf: String,
     cashback: number
 }
+```
 
 ##### GET /orders
 Retorna todos os pedidos armazenados na base de dados.
